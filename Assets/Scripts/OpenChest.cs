@@ -7,13 +7,21 @@ public class OpenChest : MonoBehaviour
     public SpriteRenderer closedChest;
     public Sprite openChestSprite;
     public GameObject statue;
+    public AudioSource audioOpenChest;
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.CompareTag("Stone"))
         {
-            statue.SetActive(false);
-            closedChest.sprite = openChestSprite;
+            StartCoroutine(Open());
         }    
+    }
+
+    IEnumerator Open()
+    {
+        statue.SetActive(false);
+        yield return new WaitForSeconds(1.5f);
+        closedChest.sprite = openChestSprite;
+        audioOpenChest.Play();
     }
 }
