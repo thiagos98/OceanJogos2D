@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class AddMassToPlayer : MonoBehaviour
 {
+    private GameObject _player;
+    private Rigidbody2D _rbPlayer;
+    private float _initialMass;
+    [SerializeField] private float _mass;
+    [SerializeField] private float _duration;
+
+    private void Start() 
+    {
+        _player = GameObject.FindGameObjectWithTag("Player");
+        _rbPlayer = _player.GetComponent<Rigidbody2D>();
+        _initialMass = _rbPlayer.mass;
+    }
+
     private void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.CompareTag("Player"))
         {
-            var rb = other.GetComponent<Rigidbody2D>();
+            _rbPlayer.mass = _mass;
 
-            rb.mass = 50f;
-
-            Invoke("ResetMass", 10f);
+            Invoke("ResetMass", _duration);
         }
     }
 
     private void ResetMass()
     {
-        var player = GameObject.FindGameObjectWithTag("Player");
-
-        var rb = player.GetComponent<Rigidbody2D>();
-
-        rb.mass = 1f;
+        _rbPlayer.mass = _initialMass;
     }
 }
